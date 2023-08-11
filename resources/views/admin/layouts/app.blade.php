@@ -12,7 +12,7 @@
 <body class="hold-transition sidebar-mini">
     <div class="wrapper" id="app">
 
-        <nav class=" main-header navbar navbar-expand navbar-white navbar-light">
+        <nav class=" main-header navbar navbar-expand navbar-white navbar-light fixed">
 
             <ul class="navbar-nav">
                 <li class="nav-item">
@@ -152,7 +152,7 @@
         </nav>
 
 
-        <aside class="main-sidebar sidebar-dark-primary elevation-4">
+        <aside class="main-sidebar sidebar-dark-primary elevation-4 fixed">
 
             <a href="index3.html" class="brand-link">
                 <img src="https://adminlte.io/themes/v3/dist/img/AdminLTELogo.png" alt="AdminLTE Logo"
