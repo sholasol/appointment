@@ -47,4 +47,20 @@ class UserController extends Controller
         return $user;
     }
 
+    // public function destroy(User $user){
+    //     $user->delete();
+
+    //     return response()->noContent();
+    // }
+
+    public function destroy(User $user){
+    try {
+        $user->delete();
+        return response()->noContent();
+    } catch (\Exception $e) {
+        return response()->json(['error' => 'An error occurred while deleting the user.'], 500);
+    }
+}
+
+
 }
