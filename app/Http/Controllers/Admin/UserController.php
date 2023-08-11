@@ -12,7 +12,15 @@ class UserController extends Controller
 {
     public function index()
         {
-            $users = User::latest()->get();
+            $users = User::latest()->get()->map(function ($user){
+                return [
+                    'id'    => $user->id,
+                    'name'  => $user->name,
+                    'email' => $user->email,
+                    'role'  =>$user->role,
+                    'created_at' => $user->created_at->format(config('app.date_format')),
+                ];
+            });
             return $users;
         }
 
@@ -47,11 +55,6 @@ class UserController extends Controller
         return $user;
     }
 
-    // public function destroy(User $user){
-    //     $user->delete();
-
-    //     return response()->noContent();
-    // }
 
     public function destroy(User $user){
     try {
@@ -61,6 +64,16 @@ class UserController extends Controller
         return response()->json(['error' => 'An error occurred while deleting the user.'], 500);
     }
 }
+
+public function  changeRole(User $user){
+    
+    $user->update([
+        'role' =>request('role'),
+    ]);
+
+    return response()->json(['success' => true]);
+}
+
 
 
 }

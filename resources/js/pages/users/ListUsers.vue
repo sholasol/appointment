@@ -6,7 +6,19 @@ import * as yup from "yup";
 import { useToastr } from "../../toaster.js";
 
 const toastr = useToastr();
+
 const users = ref([]);
+
+const roles = ref([
+    {
+        name: "ADMIN",
+        value: 1,
+    },
+    {
+        name: "USER",
+        value: 2,
+    },
+]);
 
 const editing = ref(false);
 
@@ -135,6 +147,21 @@ const deleteUser = () => {
         });
 };
 
+const changeRole = (user, role) => {
+    axios
+        .patch(`/api/users/${user.id}/change-role`, {
+            role: role,
+        })
+        .then(() => {
+            toastr.success("Role changed successfully!");
+        })
+        .catch((error) => {
+            // Handle error here if needed
+            toastr.error("Oops! Something went wrong!");
+            console.error(error);
+        });
+};
+
 onMounted(() => {
     getUsers();
 });
@@ -176,7 +203,7 @@ onMounted(() => {
                                 <th>Email</th>
                                 <th>Registered Date</th>
                                 <th>Role</th>
-                                <th>Options</th>
+                                <th width="5%">Options</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -184,8 +211,28 @@ onMounted(() => {
                                 <td>{{ index + 1 }}</td>
                                 <td>{{ user.name }}</td>
                                 <td>{{ user.email }}</td>
-                                <td></td>
-                                <td></td>
+                                <td>{{ user.created_at }}</td>
+                                <td>
+                                    <!-- {{ user.role === 1 ? "Admin" : "User" }} -->
+                                    <select
+                                        class="form-control"
+                                        @change="
+                                            changeRole(
+                                                user,
+                                                $event.target.value
+                                            )
+                                        "
+                                    >
+                                        <option
+                                            v-for="role in roles"
+                                            :value="role.value"
+                                            :key="role.value"
+                                            :selected="user.role === role.value"
+                                        >
+                                            {{ role.name }}
+                                        </option>
+                                    </select>
+                                </td>
                                 <td>
                                     <a
                                         @click.prevent="editUser(user)"
@@ -195,7 +242,7 @@ onMounted(() => {
                                         @click.prevent="
                                             confirmUserDeletion(user)
                                         "
-                                        class="fa fa-trash text-danger"
+                                        class="fa fa-trash text-danger ml-2"
                                     ></a>
                                 </td>
                             </tr>
