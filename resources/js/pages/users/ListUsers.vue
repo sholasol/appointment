@@ -198,7 +198,6 @@ const toggleSelection = (user) => {
     console.log(selectedUsers.value);
 };
 const bulkDelete = () => {
-    // console.log("Selected Users:", selectedUsers.value);
     if (selectedUsers.value.length === 0) {
         alert("No users selected for deletion.");
         return;
@@ -214,12 +213,25 @@ const bulkDelete = () => {
                 (user) => !selectedUsers.value.includes(user.id)
             );
             toastr.success(response.data.message);
-            selectedUsers.value = []; // Clear the selected users
+            selectedUsers.value = [];
+            selectAll.value = false;
         })
         .catch((error) => {
             console.error("Error deleting users:", error);
             toastr.error("An error occurred while deleting users.");
         });
+};
+
+const selectAll = ref(false);
+
+const selectAllUsers = () => {
+    //selectAll.value = !selectAll.value;
+
+    if (selectAll.value) {
+        selectedUsers.value = users.value.map((user) => user.id);
+    } else {
+        selectedUsers.value = [];
+    }
 };
 
 onMounted(() => {
@@ -267,6 +279,13 @@ onMounted(() => {
                                 <i class="fa fa-trash"></i>
                                 Delete Selected
                             </button>
+                            <span
+                                v-if="selectedUsers.length > 0"
+                                class="text-success ml-2"
+                                ><small
+                                    >Selected {{ selectedUsers.length }} users
+                                </small></span
+                            >
                         </div>
                         <div class="d-flex">
                             <input
@@ -280,7 +299,13 @@ onMounted(() => {
                     <table class="table table-bordered" width="100%">
                         <thead>
                             <tr>
-                                <th><input type="checkbox" /></th>
+                                <th>
+                                    <input
+                                        type="checkbox"
+                                        v-model="selectAll"
+                                        @change="selectAllUsers"
+                                    />
+                                </th>
                                 <th>#</th>
                                 <th>Name</th>
                                 <th>Email</th>

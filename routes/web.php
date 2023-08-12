@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\ApplicationController;
+use App\Http\Controllers\Admin\AppointmentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,7 +22,7 @@ Route::get('/', function () {
 
 // Route::get('/admin/dashboard', function(){
 //     return view('dashboard');
-// });
+// }); /api/appointment
 
 Route::get('/api/users', [UserController::class, 'index']);
 Route::post('/api/users', [UserController::class, 'store']);
@@ -30,6 +31,8 @@ Route::delete('/api/users/{user}', [UserController::class, 'destroy']);
 Route::patch('/api/users/{user}/change-role', [UserController::class, 'changeRole']);
 Route::get('/api/users/search', [UserController::class, 'search']);
 Route::delete('/api/users', [UserController::class, 'bulkDelete']);
+
+Route::get('/api/appointments', [AppointmentController::class, 'index']);
 
 
 Route::get('{view}', ApplicationController::class)->where('view', '(.*)');
