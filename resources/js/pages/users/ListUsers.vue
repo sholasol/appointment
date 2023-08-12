@@ -1,9 +1,10 @@
 <script setup>
 import axios from "axios";
-import { ref, onMounted } from "vue";
+import { ref, onMounted, watch } from "vue";
 import { Form, Field } from "vee-validate";
 import * as yup from "yup";
 import { useToastr } from "../../toaster.js";
+import { debounce } from "lodash";
 
 const toastr = useToastr();
 
@@ -162,6 +163,27 @@ const changeRole = (user, role) => {
         });
 };
 
+const searchQuery = ref(null);
+
+const search = () => {
+    axios
+        .get(`/api/users/search?query=${searchQuery.value}`)
+        .then((response) => {
+            users.value = response.data;
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+};
+
+//autosearch table
+watch(
+    searchQuery,
+    debounce(() => {
+        search();
+    }, 300)
+);
+
 onMounted(() => {
     getUsers();
 });
@@ -187,14 +209,24 @@ onMounted(() => {
         <div class="container-fluid">
             <div class="card">
                 <div class="card-body">
-                    <button
-                        @click="addUser"
-                        type="button"
-                        class="mb-2 btn btn-primary"
-                    >
-                        <i class="fa fa-plus-circle mr-1"></i>
-                        Add New User
-                    </button>
+                    <div class="d-flex justify-content-between">
+                        <button
+                            @click="addUser"
+                            type="button"
+                            class="mb-2 btn btn-primary"
+                        >
+                            <i class="fa fa-plus-circle mr-1"></i>
+                            Add New User
+                        </button>
+                        <div class="d-flex">
+                            <input
+                                v-model="searchQuery"
+                                type="text"
+                                class="form-control"
+                                placeholder="search"
+                            />
+                        </div>
+                    </div>
                     <table class="table table-bordered" width="100%">
                         <thead>
                             <tr>
@@ -206,7 +238,7 @@ onMounted(() => {
                                 <th width="5%">Options</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody v-if="users.length > 0">
                             <tr v-for="(user, index) in users" :key="user.id">
                                 <td>{{ index + 1 }}</td>
                                 <td>{{ user.name }}</td>
@@ -244,6 +276,15 @@ onMounted(() => {
                                         "
                                         class="fa fa-trash text-danger ml-2"
                                     ></a>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tbody v-else>
+                            <tr>
+                                <td colspan="6">
+                                    <p class="text-center">
+                                        Oops! No record found to dispaly...
+                                    </p>
                                 </td>
                             </tr>
                         </tbody>
