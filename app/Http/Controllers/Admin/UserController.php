@@ -83,4 +83,13 @@ class UserController extends Controller
     }
 
 
+    public function bulkDelete(Request $request) {
+    $ids = $request->input('ids');
+    
+    User::whereIn('id', $ids)->delete();
+    
+    return response()->json(['message' => 'Users deleted successfully']);
+}
+
+
 }

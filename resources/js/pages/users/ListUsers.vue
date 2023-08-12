@@ -5,6 +5,7 @@ import { Form, Field } from "vee-validate";
 import * as yup from "yup";
 import { useToastr } from "../../toaster.js";
 import { debounce } from "lodash";
+import { Bootstrap4Pagination } from "laravel-vue-pagination";
 
 const toastr = useToastr();
 
@@ -184,6 +185,43 @@ watch(
     }, 300)
 );
 
+const selectedUsers = ref([]);
+
+const toggleSelection = (user) => {
+    const index = selectedUsers.value.indexOf(user.id);
+
+    if (index === -1) {
+        selectedUsers.value.push(user.id);
+    } else {
+        selectedUsers.value.splice(index, 1);
+    }
+    console.log(selectedUsers.value);
+};
+const bulkDelete = () => {
+    // console.log("Selected Users:", selectedUsers.value);
+    if (selectedUsers.value.length === 0) {
+        alert("No users selected for deletion.");
+        return;
+    }
+    axios
+        .delete("/api/users", {
+            data: {
+                ids: selectedUsers.value,
+            },
+        })
+        .then((response) => {
+            users.value = users.value.filter(
+                (user) => !selectedUsers.value.includes(user.id)
+            );
+            toastr.success(response.data.message);
+            selectedUsers.value = []; // Clear the selected users
+        })
+        .catch((error) => {
+            console.error("Error deleting users:", error);
+            toastr.error("An error occurred while deleting users.");
+        });
+};
+
 onMounted(() => {
     getUsers();
 });
@@ -210,14 +248,26 @@ onMounted(() => {
             <div class="card">
                 <div class="card-body">
                     <div class="d-flex justify-content-between">
-                        <button
-                            @click="addUser"
-                            type="button"
-                            class="mb-2 btn btn-primary"
-                        >
-                            <i class="fa fa-plus-circle mr-1"></i>
-                            Add New User
-                        </button>
+                        <div>
+                            <button
+                                @click="addUser"
+                                type="button"
+                                class="mb-2 btn btn-primary"
+                            >
+                                <i class="fa fa-plus-circle mr-1"></i>
+                                Add New User
+                            </button>
+
+                            <button
+                                v-if="selectedUsers.length > 0"
+                                @click="bulkDelete"
+                                type="button"
+                                class="mb-2 btn btn-danger ml-2"
+                            >
+                                <i class="fa fa-trash"></i>
+                                Delete Selected
+                            </button>
+                        </div>
                         <div class="d-flex">
                             <input
                                 v-model="searchQuery"
@@ -230,6 +280,7 @@ onMounted(() => {
                     <table class="table table-bordered" width="100%">
                         <thead>
                             <tr>
+                                <th><input type="checkbox" /></th>
                                 <th>#</th>
                                 <th>Name</th>
                                 <th>Email</th>
@@ -240,6 +291,15 @@ onMounted(() => {
                         </thead>
                         <tbody v-if="users.length > 0">
                             <tr v-for="(user, index) in users" :key="user.id">
+                                <td>
+                                    <input
+                                        type="checkbox"
+                                        :checked="
+                                            selectedUsers.includes(user.id)
+                                        "
+                                        @change="toggleSelection(user)"
+                                    />
+                                </td>
                                 <td>{{ index + 1 }}</td>
                                 <td>{{ user.name }}</td>
                                 <td>{{ user.email }}</td>
