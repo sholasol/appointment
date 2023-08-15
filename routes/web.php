@@ -32,6 +32,9 @@ Route::patch('/api/users/{user}/change-role', [UserController::class, 'changeRol
 Route::get('/api/users/search', [UserController::class, 'search']);
 Route::delete('/api/users', [UserController::class, 'bulkDelete']);
 
+
+//Route::post('/api/appointments/create', [AppointmentController::class, 'store']);
+Route::post('/api/appointments', [AppointmentController::class, 'store']);
 Route::get('/api/appointments', [AppointmentController::class, 'index']);
 
 

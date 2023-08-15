@@ -27,4 +27,28 @@ class AppointmentController extends Controller
                 'client' => $appointment->client,
             ]);
     }
+
+    public function store(Request $request){
+        
+        $validated = request()->validate([
+                'title' => 'required',
+                'start' => 'required',
+                'end' => 'required',
+                'client' => 'required',
+                'description' => 'required',
+            ]);
+
+
+            Appointment::create([
+                'title' => $validated('title'),
+                'client_id' => $validated('client'),
+                'start_time' => $validated('start'),
+                'end_time' => $validated('end'),
+                'description' => $validated('description'),
+                'status' => 1,
+            ]);
+
+            return response()->json(['message' => 'Appointment created successfully']);
+    
+    }
 }
