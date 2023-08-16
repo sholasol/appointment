@@ -42,5 +42,6 @@ export default [
         name: 'admin.settings',
         component: Settings,
     },
+   
 
 ]

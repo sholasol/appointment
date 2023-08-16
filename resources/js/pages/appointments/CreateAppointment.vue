@@ -3,7 +3,7 @@ import axios from "axios";
 import { onMounted, reactive } from "vue";
 import { useToastr } from "../../toaster.js";
 import { useRouter } from "vue-router";
-import { Form } from "vee-validate";
+import { Form, Field } from "vee-validate";
 import flatpickr from "flatpickr";
 import "flatpickr/dist/themes/light.css";
 
@@ -38,7 +38,7 @@ const handleSubmit = (values, actions) => {
                 const errorMessage = errorMessages.join("<br>");
                 toastr.error(errorMessage, "Error");
             } else {
-                // console.error("Request failed:", error);
+                console.error("Request failed:", error);
             }
         });
 };
@@ -120,23 +120,25 @@ onMounted(() => {
                                                 id="client"
                                                 class="form-control"
                                             >
-                                                <option value="1">
+                                                <option value="5">
                                                     Client One
                                                 </option>
-                                                <option value="2">
+                                                <option value="6">
                                                     Client Two
                                                 </option>
                                             </select>
+                                            <span class="invalid-feedback">{{
+                                                errors.client
+                                            }}</span>
                                         </div>
-                                        <span class="invalid-feedback">{{
-                                            errors.client
-                                        }}</span>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="date">Start Time</label>
+                                            <label for="start"
+                                                >Start Time</label
+                                            >
                                             <input
                                                 :class="{
                                                     'is-invalid': errors.start,
@@ -146,14 +148,14 @@ onMounted(() => {
                                                 class="form-control flatpickr"
                                                 id="start"
                                             />
+                                            <span class="invalid-feedback">{{
+                                                errors.start
+                                            }}</span>
                                         </div>
-                                        <span class="invalid-feedback">{{
-                                            errors.start
-                                        }}</span>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="time">End Time</label>
+                                            <label for="end">End Time</label>
                                             <input
                                                 :class="{
                                                     'is-invalid': errors.end,
@@ -163,10 +165,10 @@ onMounted(() => {
                                                 class="form-control flatpickr"
                                                 id="end"
                                             />
+                                            <span class="invalid-feedback">{{
+                                                errors.end
+                                            }}</span>
                                         </div>
-                                        <span class="invalid-feedback">{{
-                                            errors.end
-                                        }}</span>
                                     </div>
                                 </div>
                                 <div class="form-group">

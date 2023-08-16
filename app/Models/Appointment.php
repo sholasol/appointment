@@ -13,6 +13,15 @@ class Appointment extends Model
 
     // protected $guarded = [];
 
+    protected $fillable = [
+        'title',
+        'client_id',
+        'start_time',
+        'end_time',
+        'description',
+        'status'
+    ];
+
     protected $casts = [
         'start_time' =>'datetime',
         'end_time'   => 'datetime',

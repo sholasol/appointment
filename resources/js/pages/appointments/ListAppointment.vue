@@ -141,6 +141,7 @@ onMounted(() => {
                                     <tr>
                                         <th scope="col">#</th>
                                         <th scope="col">Client Name</th>
+                                        <th width="20%" scope="col">Title</th>
                                         <th scope="col">Date</th>
                                         <th scope="col">Time</th>
                                         <th scope="col">Status</th>
@@ -159,6 +160,7 @@ onMounted(() => {
                                             {{ appointment.client.firstname }}
                                             {{ appointment.client.lastname }}
                                         </td>
+                                        <td>{{ appointment.title }}</td>
                                         <td>{{ appointment.start_time }}</td>
                                         <td>{{ appointment.end_time }}</td>
                                         <td>
