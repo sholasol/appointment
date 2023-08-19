@@ -1,6 +1,7 @@
 <script setup>
 import axios from "axios";
 import { ref, onMounted, watch } from "vue";
+import Swal from "sweetalert2";
 
 const appointments = ref([]);
 
@@ -42,6 +43,48 @@ const getAppointments = (status) => {
         });
 };
 
+// const deleteAppointment = () => {
+//     axios
+//         .delete(`/api/appointments/${appointmentIdBeingDeleted.value}`)
+//         .then(() => {
+//             $("#deleteAppointmentModal").modal("hide");
+//             toastr.success("Appointment deleted successfully!");
+//             appointments.value = appointments.value.filter(
+//                 (appointment) =>
+//                     appointment.id !== appointmentIdBeingDeleted.value
+//             );
+//         })
+//         .catch((error) => {
+//             // Handle error here if needed
+//             toastr.error("Oops! Something went wrong!");
+//             console.error(error);
+//         });
+// };
+
+const deleteAppointment = (id) => {
+    Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+        if (result.isConfirmed) {
+            axios.delete(`/api/appointments/${id}`).then((response) => {
+                appointments.value = appointments.value.filter(
+                    (appointment) => appointment.id !== id
+                );
+                Swal.fire(
+                    "Deleted!",
+                    "Appointment has been deleted.",
+                    "success"
+                );
+            });
+        }
+    });
+};
 onMounted(() => {
     getAppointments();
 });
@@ -84,9 +127,9 @@ onMounted(() => {
                                 class="btn btn-secondary"
                             >
                                 <span class="mr-1">All</span>
-                                <span class="badge badge-pill badge-info"
-                                    >1</span
-                                >
+                                <span class="badge badge-pill badge-info">{{
+                                    appointments.length
+                                }}</span>
                             </button>
 
                             <button
@@ -131,11 +174,6 @@ onMounted(() => {
                     </div>
                     <div class="card">
                         <div class="card-body">
-                            {{
-                                appointments.length > 0
-                                    ? appointments.length
-                                    : "No"
-                            }}
                             <table class="table table-bordered">
                                 <thead>
                                     <tr>
@@ -179,10 +217,17 @@ onMounted(() => {
                                             </span>
                                         </td>
                                         <td>
-                                            <a href=""
+                                            <router-link
+                                                :to="`/admin/appointment/${appointment.id}/edit`"
                                                 ><i class="fa fa-edit mr-2"></i
-                                            ></a>
-                                            <a href=""
+                                            ></router-link>
+                                            <a
+                                                href="#"
+                                                @click.prevent="
+                                                    deleteAppointment(
+                                                        appointment.id
+                                                    )
+                                                "
                                                 ><i
                                                     class="fa fa-trash text-danger"
                                                 ></i

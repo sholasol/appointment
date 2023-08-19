@@ -22,6 +22,11 @@ export default [
         name: 'admin.create-appointment',
         component: CreateAppointment,
     },
+     {
+        path: '/admin/appointment/:id/edit',
+        name: 'admin.appointment.edit',
+        component: CreateAppointment,
+    },
     {
         path: '/admin/users',
         name: 'admin.users',

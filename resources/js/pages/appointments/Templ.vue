@@ -20,43 +20,11 @@ const form = reactive({
 });
 
 const handleSubmit = (values, actions) => {
-    if (editMode.value) {
-        editAppointment(values, actions);
-    } else {
-        createAppointment(values, actions);
-    }
-};
-
-const createAppointment = (values, actions) => {
     axios
         .post("/api/appointments", form)
         .then((response) => {
             console.log(values);
             toastr.success("Appointment created successfully!");
-            router.push("/admin/appointment");
-        })
-        .catch((error) => {
-            if (
-                error.response &&
-                error.response.data &&
-                error.response.data.errors
-            ) {
-                const errorMessages = Object.values(
-                    error.response.data.errors
-                ).flat();
-                const errorMessage = errorMessages.join("<br>");
-                toastr.error(errorMessage, "Error");
-            } else {
-                console.error("Request failed:", error);
-            }
-        });
-};
-
-const editAppointment = (value, actions) => {
-    axios
-        .put(`/api/appointments/${route.params.id}/edit`, form)
-        .then((response) => {
-            toastr.success("Appointment updated successfully!");
             router.push("/admin/appointment");
         })
         .catch((error) => {

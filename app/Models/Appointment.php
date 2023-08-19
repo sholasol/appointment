@@ -22,6 +22,8 @@ class Appointment extends Model
         'status'
     ];
 
+    // protected $appends =['formatted_start_time'];
+
     protected $casts = [
         'start_time' =>'datetime',
         'end_time'   => 'datetime',
@@ -32,4 +34,11 @@ class Appointment extends Model
     {
         return $this->belongsTo(Client::class);
     }
+
+    // public function formattedStartTime(): Attribute
+    // {
+    //     return Attribute::make(
+    //         get : fn () => $this->start_time->format('Y-m-d h:i A'),
+    //     );  
+    // }
 }
