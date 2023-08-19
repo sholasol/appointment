@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\ApplicationController;
+use App\Http\Controllers\Admin\ClientController;
 use App\Http\Controllers\Admin\AppointmentController;
 
 /*
@@ -32,8 +33,10 @@ Route::patch('/api/users/{user}/change-role', [UserController::class, 'changeRol
 Route::get('/api/users/search', [UserController::class, 'search']);
 Route::delete('/api/users', [UserController::class, 'bulkDelete']);
 
-//newAppointment
-//Route::post('/api/appointments/create', [AppointmentController::class, 'store']);
+
+Route::get('/api/client', [ClientController::class, 'index']);
+
+
 Route::post('/api/appointments', [AppointmentController::class, 'store']);
 Route::get('/api/appointments', [AppointmentController::class, 'index']);
 

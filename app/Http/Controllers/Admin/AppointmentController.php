@@ -36,6 +36,12 @@ class AppointmentController extends Controller
             'end' => 'required',
             'client' => 'required',
             'description' => 'required',
+        ], [
+            'title.required' => "Appointment title is required",
+            'client.required' => "Client name is required",
+            'start.required' => "Appointment time is required",
+            'end.required' => "Appointment end time is required",
+            'description.required' => "Please enter a description",
         ]);
 
         Appointment::create([

@@ -1,6 +1,6 @@
 <script setup>
 import axios from "axios";
-import { onMounted, reactive } from "vue";
+import { onMounted, reactive, ref } from "vue";
 import { useToastr } from "../../toaster.js";
 import { useRouter } from "vue-router";
 import { Form, Field } from "vee-validate";
@@ -43,12 +43,20 @@ const handleSubmit = (values, actions) => {
         });
 };
 
+const clients = ref();
+const getClients = () => {
+    axios.get("/api/client").then((response) => {
+        clients.value = response.data;
+    });
+};
+
 onMounted(() => {
     flatpickr(".flatpickr", {
         enableTime: true,
         dateFormat: "Y-m-d h:i K",
         defaultHour: 10,
     });
+    getClients();
 });
 </script>
 
@@ -120,11 +128,13 @@ onMounted(() => {
                                                 id="client"
                                                 class="form-control"
                                             >
-                                                <option value="5">
-                                                    Client One
-                                                </option>
-                                                <option value="6">
-                                                    Client Two
+                                                <option
+                                                    v-for="client in clients"
+                                                    :key="client.id"
+                                                    :value="client.id"
+                                                >
+                                                    {{ client.firstname }}
+                                                    {{ client.lastname }}
                                                 </option>
                                             </select>
                                             <span class="invalid-feedback">{{
