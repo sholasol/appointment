@@ -1,16 +1,29 @@
 <script setup>
 import axios from "axios";
-import { reactive } from "vue";
+import { reactive, ref } from "vue";
 
 const form = reactive({
     email: "",
     password: "",
 });
 
+const errorMessage = ref("");
+const loading = ref(false);
+
 const handleSubmit = () => {
-    axios.post("/login").then((response) => {
-        window.location.href = "/admin/dashboard";
-    });
+    loading.value = true;
+    errorMessage.value = "";
+    axios
+        .post("/login", form)
+        .then((response) => {
+            window.location.href = "/admin/dashboard";
+        })
+        .catch((error) => {
+            errorMessage.value = error.response.data.message;
+        })
+        .finally(() => {
+            loading.value = false;
+        });
 };
 </script>
 <template>
@@ -21,6 +34,14 @@ const handleSubmit = () => {
             </div>
             <div class="card-body">
                 <p class="login-box-msg">Sign in to start your session</p>
+                <div
+                    v-if="errorMessage"
+                    class="alert alert-danger"
+                    role="alert"
+                >
+                    {{ errorMessage }}
+                </div>
+
                 <form @submit.prevent="handleSubmit">
                     <div class="input-group mb-3">
                         <input
@@ -58,10 +79,21 @@ const handleSubmit = () => {
 
                         <div class="col-4">
                             <button
+                                :disabled="loading"
                                 type="submit"
                                 class="btn btn-primary btn-block"
                             >
-                                Sign In
+                                <div
+                                    v-if="loading"
+                                    class="spinner-border spinner-border-sm"
+                                    role="status"
+                                >
+                                    <span class="visually-hidden"
+                                        >Loading...</span
+                                    >
+                                </div>
+
+                                <span v-else>Sign In</span>
                             </button>
                         </div>
                     </div>

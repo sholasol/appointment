@@ -260,12 +260,16 @@
                             </router-link>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-power-off"></i>
-                                <p>
-                                    Logout
-                                </p>
-                            </a>
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
+                                <a href="#" onclick="event.preventDefault(); this.closest('form').submit()"
+                                    class="nav-link">
+                                    <i class="nav-icon fas fa-power-off"></i>
+                                    <p>
+                                        Logout
+                                    </p>
+                                </a>
+                            </form>
                         </li>
                     </ul>
                 </nav>
