@@ -5,6 +5,7 @@ import ListUsers from './pages/users/ListUsers.vue';
 import CreateUsers from './pages/users/CreateUser.vue';
 import Profile from './pages/profile/Profile.vue';
 import Settings from './pages/settings/Settings.vue';
+import Login from './pages/auth/Login.vue';
 
 export default [
     {
@@ -46,6 +47,11 @@ export default [
         path: '/admin/settings',
         name: 'admin.settings',
         component: Settings,
+    },
+     {
+        path: '/login',
+        name: 'admin.login',
+        component: Login,
     },
    
 

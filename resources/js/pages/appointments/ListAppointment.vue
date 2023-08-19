@@ -2,6 +2,7 @@
 import axios from "axios";
 import { ref, onMounted, watch } from "vue";
 import Swal from "sweetalert2";
+import { Bootstrap4Pagination } from "laravel-vue-pagination";
 
 const appointments = ref([]);
 

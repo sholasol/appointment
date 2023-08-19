@@ -18,7 +18,7 @@ class AppointmentController extends Controller
             $query->where('status', request('status'));
         }
 
-        return $query->get()
+        return $query->paginate(20)
             ->map(fn($appointment) => [
                 'id' => $appointment->id,
                 'start_time' => $appointment->start_time->format('Y-m-d h:i A'),
