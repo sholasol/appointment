@@ -57,4 +57,18 @@ class DashboardstatsController extends Controller
             'totalUsersCount' => $totalUsersCount,
         ]);
     }
+
+
+    public function DashboardStats(Request $request) {
+        $scheduledCount = Appointment::where('status', 1)->count();
+        $confirmedCount = Appointment::where('status', 2)->count();
+        $cancelledCount = Appointment::where('status', 3)->count();
+
+        return response()->json([
+            'scheduledCount' => $scheduledCount,
+            'confirmedCount' => $confirmedCount,
+            'cancelledCount' => $cancelledCount,
+        ]);
+    }
+
 }

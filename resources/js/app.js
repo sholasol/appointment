@@ -14,6 +14,7 @@ import Login from './pages/auth/Login.vue';
 
 
 
+
 const app = createApp({});
 
 const router = createRouter({

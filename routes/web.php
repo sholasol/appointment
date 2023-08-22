@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\Admin\ClientController;
+use App\Http\Controllers\Admin\ProfileController;
+use App\Http\Controllers\Admin\SettingsController;
 use App\Http\Controllers\Admin\AppointmentController;
 use App\Http\Controllers\Admin\DashboardstatsController;
 
@@ -37,13 +39,31 @@ Route::middleware('auth')->group(function(){
     Route::get('/api/client', [ClientController::class, 'index']);
 
    ///api/stats/users
-    Route::get('api/stats/users', [DashboardstatsController::class, 'users']);
-    Route::get('api/stats/appointments', [DashboardstatsController::class, 'appointments']);
+    Route::get('/api/stats/users', [DashboardstatsController::class, 'users']);
+
+    Route::get('/api/stats/dashboard', [DashboardstatsController::class, 'DashboardStats']);
+
+    Route::get('/api/stats/appointments', [DashboardstatsController::class, 'appointments']);
     Route::post('/api/appointments', [AppointmentController::class, 'store']);
     Route::get('/api/appointments', [AppointmentController::class, 'index']);
     Route::get('/api/appointments/{appointment}/edit', [AppointmentController::class, 'edit']);
     Route::put('/api/appointments/{appointment}/edit', [AppointmentController::class, 'update']);
     Route::delete('/api/appointments/{appointment}', [AppointmentController::class, 'destroy']);
+
+    //settings
+    Route::get('/api/settings', [SettingsController ::class, 'settings']);
+    Route::post('/api/settings', [SettingsController ::class, 'update']);
+
+    Route::get('/api/profile', [ProfileController ::class, 'index']);
+    Route::post('/api/profile', [ProfileController ::class, 'update']);
+    Route::post('/api/upload-profile-image', [ProfileController ::class, 'uploadImage']);
+
+    Route::post('/api/changePassword', [ProfileController ::class, 'changePassword']);
+
+    
+
+    
+
 });
 
 

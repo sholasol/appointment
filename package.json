@@ -13,6 +13,7 @@
     },
     "dependencies": {
         "admin-lte": "^3.2.0",
+        "chart.js": "^4.3.3",
         "flatpickr": "^4.6.13",
         "jquery": "^3.7.0",
         "laravel-vue-pagination": "^4.1.1",
@@ -20,6 +21,7 @@
         "sweetalert2": "^11.7.26",
         "vee-validate": "^4.11.1",
         "vue": "^3.3.4",
+        "vue-chartjs": "^5.2.0",
         "vue-router": "^4.2.4",
         "yup": "^1.2.0"
     }

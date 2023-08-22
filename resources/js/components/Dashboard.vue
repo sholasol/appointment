@@ -37,6 +37,7 @@ const getUsersCount = () => {
 onMounted(() => {
     getAppointmentsCount();
     getUsersCount();
+    //updateAppointmentChart();
 });
 </script>
 <template>
@@ -131,6 +132,12 @@ onMounted(() => {
                             <i class="fas fa-arrow-circle-right"></i>
                         </router-link>
                     </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <h5 class="text-center">Chart Js</h5>
+                    <div style="width: 800px"></div>
                 </div>
             </div>
         </div>
